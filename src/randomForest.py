@@ -28,8 +28,8 @@ class RandomForestClassifier:
         n, m = train_x.shape
         for tree in self.forest:
             data, labels = shuffle(train_x, train_y)
-            data, labels = data[:n//3], labels[:n//3]
-            f = np.random.choice(m, 3*m//5)
+            data, labels = data[:n//4], labels[:n//4]
+            f = np.random.choice(m, (2*m)//3)
             data = data[:,f]
             tree.features = f
             tree.clf.fit(data, labels)
