@@ -1,15 +1,20 @@
-import numpy as np
-from DotDict import dotDict
 from typing import Callable
 
-class DecisionTree:
+import numpy as np
+
+from DotDict import dotDict
+
+
+class DecisionTreeClassifier:
     """
     Decision Tree implementation in numpy
     """
 
     def __init__(self,
                 criterion : str = 'gini',
-                max_depth : int|None = None
+                max_depth : int|None = None,
+                n_thresholds : int = 10,
+                early_stopping : bool = False
                 ) -> None:
         self.tree = dotDict({
             'feature' : None,
@@ -20,17 +25,22 @@ class DecisionTree:
         })
         self.criterion = criterion
         self.max_depth = max_depth
+        self.n_thresholds = n_thresholds
+        self.early_stopping = early_stopping
         self.used_features = set()
 
     @property
     def split_func(self):
+        """
+        returns the criterion callable method
+        """
         dispatch = {'gini' : self.giniIndex,
                     'entropy' : self.entropy}
         return dispatch[self.criterion]
 
 
     @staticmethod
-    def giniIndex(p: float):
+    def giniIndex(p: float, early_stopping : bool = False) -> float:
         """
         Gini Index of the given binary label data
 
@@ -39,12 +49,16 @@ class DecisionTree:
             p (float): the fraction of labels of 
             one particular value
         Returns:
+        --------
             float: gini index_
         """
+        if early_stopping:
+            if p < 0.05 or p > 0.95:
+                return 0
         return 2 * p * (1 - p)
     
     @staticmethod
-    def entropy(p : float):
+    def entropy(p : float, early_stopping : bool = False) -> float:
         """
         Entropy of the given binary label data
 
@@ -53,9 +67,13 @@ class DecisionTree:
             p (float): the fraction of labels of 
             one particular value
         Returns:
+        --------
             float: Entropy
         """
         # to clamp the number in (0,1)
+        if early_stopping:
+            if p < 0.05 or p > 0.95:
+                return 0
         p = sorted([1e-6, p, 1 - 1e-6])[1]
         return p * np.log2(p) + (1-p) * np.log2(1-p)
     
@@ -78,11 +96,13 @@ class DecisionTree:
             yr (np.ndarray): labels separated to the right
 
         Returns:
+        --------
             float: _description_
         """
         n = y.size
         nl = yl.size
         nr = yr.size
+        if nl == 0 or nr == 0:  return 0
         p = np.sum(y)/n
         pl = np.sum(yl)/nl
         pr = np.sum(yr)/nr
@@ -92,9 +112,27 @@ class DecisionTree:
     def bestSplit(self, 
                 x : np.ndarray, 
                 y : np.ndarray, 
-                numThreshold : int = 10,
+                numThreshold : int,
                 ) -> dotDict:
+        """
+        Finds the best split
 
+        Args:
+        -----
+            x (np.ndarray): input data
+            y (np.ndarray): labels
+            numThreshold (int): number of thresholds to check on.
+
+        Returns:
+        --------
+            dotDict: dictionary of different required attributes which are 
+            - infogain
+            - feature
+            - threshold
+            - leftTree dataset
+            - rightTree dataset
+            - value on this node
+        """
         unique, counts = np.unique(y, return_counts = True)
         idx = max(enumerate(counts), key = lambda x: x[1])[0]
         value = unique[idx]
@@ -159,16 +197,20 @@ class DecisionTree:
         
         
         # Stopping Criteria
-        if n > 1 and self.split_func(np.sum(y==y[0])/n) and self.used_features.__len__() < self.max_depth:
-            best_split = self.bestSplit(X,y)
+        if n > 1 and self.split_func(np.sum(y==y[0])/n, self.early_stopping) and self.used_features.__len__() < self.max_depth:
+            best_split = self.bestSplit(X,y, self.n_thresholds)
+            if best_split.infogain == 0:
+                self.tree.value = best_split.value
+                return
+            
             self.tree.feature = best_split.feature
             self.tree.value = best_split.value
             self.tree.threshold = best_split.threshold
             self.used_features.add(self.tree.feature)
-            self.tree.leftTree = DecisionTree()
+            self.tree.leftTree = DecisionTreeClassifier()
             self.tree.leftTree.used_features = self.used_features.copy()
             self.tree.leftTree.fit(*best_split.left)
-            self.tree.rightTree = DecisionTree()
+            self.tree.rightTree = DecisionTreeClassifier()
             self.tree.rightTree.used_features = self.used_features.copy()
             self.tree.rightTree.fit(*best_split.right)
         else:
@@ -176,7 +218,18 @@ class DecisionTree:
             idx = max(enumerate(counts), key = lambda x: x[1])[0]
             self.tree.value = unique[idx]
     
-    def __classify__(self, x):
+    def __classify__(self, x : np.ndarray):
+        """
+        classifies a single data point
+
+        Args:
+        -----
+            x (np.ndarray): data point
+
+        Returns:
+        --------
+            any: predicted label
+        """
         if self.tree.feature is None:
             return self.tree.value
         if x[self.tree.feature] < self.tree.threshold:
@@ -184,7 +237,16 @@ class DecisionTree:
         else:
             return self.tree.rightTree.__classify__(x)
     
-    def predict(self, x):
+    def predict(self, x : np.ndarray) -> np.ndarray:
+        """
+        predicts the labels of given test data input
+
+        Args:
+            test_x (np.ndarray): data
+
+        Returns:
+            np.ndarray: labels
+        """
         pred = np.zeros(x.shape[0])
         for i in range(pred.size):
             pred[i] = self.__classify__(x[i])
