@@ -2,6 +2,7 @@
 ## AI20BTECH11006
 
 ### Results
+Achieved an accuracy of 80.9 using stacking, 81 using random forest alone.
 
 ### Preprocessing
 I used two kinds of pre-processing, one being PCA which I used for KNN and Logistic Regression. The other being just removing two features (l, m value) which was used for Decision Tree and Random forest. I used this method because it gave me slightly higher accuracy and it doesn't lead to loss in explanability in case of Decision Tree.
