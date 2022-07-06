@@ -1,6 +1,7 @@
 import numpy as np
 from tqdm import tqdm
-from DataHandler import shuffle, iterate_minibatches
+# from DataHandler 
+from lib import shuffle, iterate_minibatches
 
 class logisticRegression:
     """

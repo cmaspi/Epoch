@@ -1,7 +1,7 @@
 from DecisionTree import DecisionTreeClassifier
 import numpy as np
-from DotDict import dotDict
-from DataHandler import shuffle
+from lib import dotDict
+from lib import shuffle
 from scipy.stats import mode
 
 class RandomForestClassifier:

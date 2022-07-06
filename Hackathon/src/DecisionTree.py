@@ -2,7 +2,7 @@ from typing import Callable
 
 import numpy as np
 
-from DotDict import dotDict
+from lib import dotDict
 
 
 class DecisionTreeClassifier:
