@@ -10,6 +10,7 @@ tqdm = "*"
 seaborn = "*"
 matplotlib = "*"
 ipykernel = "*"
+sklearn = "*"
 
 [dev-packages]
 
