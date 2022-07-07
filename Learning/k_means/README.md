@@ -2,11 +2,11 @@
 K means clustering is an unsupervised clustering method
 
 ## Algorithm
-Repeat this procedure till centroids are no longer moving
-1. Initiaze k centroids randomly
-2. For each data points identify which centroid is closest to that point
-3. group the datapoints based on closest centroid
-4. shift the centroid to the mean of those datapoints
+Repeat this procedure till centroids are no longer moving       
+1. Initiaze k centroids randomly,   
+2. For each data points identify which centroid is closest to that point,   
+3. group the datapoints based on closest centroid,  
+4. shift the centroid to the mean of those datapoints.
 
 ## Drawbacks
 1. K means clustering is good at finding clusters that are spherical in shape, but they perform really bad on basically almost everything else, take moon shape for an example.
