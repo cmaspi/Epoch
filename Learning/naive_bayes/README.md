@@ -17,3 +17,9 @@ Given some training data, you can calculate all the things on the right.
 
 ## Gaussian Naive Bayes
 This is naive bayes with just some features being continuous instead of categorical or ordinal. You assume that the feature has a latent gaussian distribution and calculate variance and mean from the data.
+
+## Questions
+1. Give some examples where naive bayes could be useful
+2. define posterior probability
+3. Define prior probability
+4. is Naive bayes discriminative or generative?
