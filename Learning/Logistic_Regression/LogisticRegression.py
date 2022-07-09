@@ -1,17 +1,20 @@
+import sys
+sys.path.insert(0, "../../")
 import numpy as np
 from tqdm import tqdm
 from Helpful_libs.DataHandler import shuffle, iterate_minibatches
+
 
 class logisticRegression:
     """
     (Binary) Logistic Regression is a statistical model that
     models probability of an event by taking the log of odds.
     """
-    W = None
-    b = None
+    W = np.zeros(1)
+    b = 0
 
     @staticmethod
-    def sigmoid(x : np.ndarray) -> np.ndarray:
+    def sigmoid(x: np.ndarray) -> np.ndarray:
         """Sigmoid function
 
         Args:
@@ -23,13 +26,13 @@ class logisticRegression:
             np.ndarray: n x 1 vector
         """
         return 1/(1+np.exp(-x))
-    
-    def fit(self, 
-            x : np.ndarray, 
+
+    def fit(self,
+            x: np.ndarray,
             y: np.ndarray,
-            epochs : int = 10,
-            batch_size : int = 32,
-            lr : float = 1e-4
+            epochs: int = 10,
+            batch_size: int = 32,
+            lr: float = 1e-4
             ):
         """
         learns the mapping from data to label
@@ -43,7 +46,7 @@ class logisticRegression:
             lr (float, optional): learning rate. Defaults to 1e-4.
         """
         # shuffles the data
-        x,y = shuffle(x,y)
+        x, y = shuffle(x, y)
 
         # initializing weights
         self.W = np.zeros(x.shape[1])
@@ -56,8 +59,8 @@ class logisticRegression:
                 delta_b = lr * (self.__logits__(train) - label)
                 self.W -= train.T @ delta_b / batch_size
                 self.b -= np.mean(delta_b)
-        
-    def __logits__(self, x : np.ndarray) -> np.ndarray:
+
+    def __logits__(self, x: np.ndarray) -> np.ndarray:
         """
         returns the logits
 
@@ -70,8 +73,8 @@ class logisticRegression:
             np.ndarray: logits
         """
         return self.sigmoid(x @ self.W + self.b)
-    
-    def predict(self, x : np.ndarray) -> np.ndarray:
+
+    def predict(self, x: np.ndarray) -> np.ndarray:
         """
         rounds of the logits
 
@@ -84,6 +87,3 @@ class logisticRegression:
             np.ndarray: label
         """
         return np.around(self.__logits__(x))
-
-
-
