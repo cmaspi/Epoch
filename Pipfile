@@ -11,6 +11,8 @@ seaborn = "*"
 matplotlib = "*"
 ipykernel = "*"
 pyqt5 = "*"
+flake8 = "*"
+mypy = "*"
 
 [dev-packages]
 autopep8 = "*"
