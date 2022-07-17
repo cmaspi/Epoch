@@ -30,5 +30,11 @@ Bagging is just like a group of people trying to collectively come at an answer 
 3. Why should you not prune individual trees?
 4. What is OOB (out of bag error)?
 
+## Answers
+1. It's bad, we would want the trees to be independent upto a certain extent.
+2. Read section 'Why Bagging works?'
+3. Those trees are already weak classifiers, they won't overfit.
+4. OOB error is basically calculating error on the training sample that is not used by individual trees, it's similar to validation error in some sense (for each tree)
+
 
 
