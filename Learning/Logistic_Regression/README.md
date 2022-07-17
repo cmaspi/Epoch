@@ -38,3 +38,9 @@ $$\frac{\partial J}{\partial b} = \left( \frac{1}{1+e^{-z}} - y \right)$$
 4. How is ordinal logistic regression different from logistic regression with just more than 2 categories?
 5. Explain the need of regularization.
 
+## Answers
+1. Use one-vs-one or one-vs-many
+2. For large datasets it is recommended to use stochastic gradient descent, even for smaller ones it can help prevent overfitting.
+3. Just use n-1 classifiers, each denotes whether on not the value should be below given value.
+4. in categorical we don't have a sense of comparison, so we require nC2 classifiers
+5. If the model overfits on given dataset, it is better to use regularization.
