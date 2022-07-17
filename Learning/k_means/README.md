@@ -26,3 +26,10 @@ The only difference in this algorithm is how you initialize the centroids.
 [fillers]
 5. why does k means not work for moon shape clusters?
 
+## Answers
+1. Would perform poorly on normalized data
+2. Use elbow method, that says choose the value of $k$ which cause the average distance between a points in the cluster to the centroid to decrease the most.
+3. Yes, we don't often know which feature is more important, if we don't normalize, some feature would have effect on centroid more than the other.
+4. Yes, say you use manhattan distance, now this clustering would be called k-mediod clustering which is also a well known clustering method. The original k-means algorithm is only for euclidian distance.
+5. the distance between a point in different cluster could be and often is smaller from centroid of another cluster,
+
