@@ -35,6 +35,13 @@ When classifying simply go through the k-D tree, maintain a heap of the points t
 4. is KNN parametric? Explain
 5. On a small dataset, which is better brute or k-D tree implementation?
 
+## Answers
+1. Exponential increase of computational complexity, points tend to lie on a hyper sphere.
+2. ball tree
+3. Typically no, knn is literally just birds of a feather flock together, cosine similarity doesn't capture that, it may still work
+4. Yes and No, depends on implementation
+5. brute
+
 
 
 
