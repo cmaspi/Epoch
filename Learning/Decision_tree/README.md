@@ -37,4 +37,11 @@ Explanability: Often we want to know why the classifier has classified a given s
 4. Decision trees have boundaries along given axes, can they have boundaries as some angle from those axes?
 5. How do you find the best tree? (generic)
 
+## Answers
+1. Those models are called regression trees, they have certain similarity with the decision trees.
+2. You may or may not, it is easy enough to come up with an example where you would want to use it more than once, but standard practice it to not do that.
+3. Decision trees are popular for their explanability, they are literally just a set of rules, using PCA you would loose it to a certain extent.
+4. in case of multivariate trees, they can
+5. k cross validation
+
 
