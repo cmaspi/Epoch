@@ -23,3 +23,9 @@ This is naive bayes with just some features being continuous instead of categori
 2. define posterior probability
 3. Define prior probability
 4. is Naive bayes discriminative or generative?
+
+## Answers
+1. It can be used for test classification, but it would be an inferior model anywhere.
+2. P(A|B) (the thing we are trying to model)
+3. P(A) (the thing we already know)
+4. Generative, it doesn't make boundaries
